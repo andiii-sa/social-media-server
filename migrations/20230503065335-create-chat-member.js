@@ -5,25 +5,17 @@ module.exports = {
     await queryInterface.createTable("chat_members", {
       id: {
         allowNull: false,
-        autoIncrement: true,
         primaryKey: true,
-        type: Sequelize.INTEGER,
+        type: Sequelize.UUID,
+        defaultValue: Sequelize.UUIDV4,
       },
       chat_id: {
-        type: Sequelize.INTEGER,
+        type: Sequelize.UUID,
         allowNull: false,
-        references: {
-          model: "chats",
-          key: "id",
-        },
       },
       user_id: {
-        type: Sequelize.INTEGER,
+        type: Sequelize.UUID,
         allowNull: false,
-        references: {
-          model: "users",
-          key: "id",
-        },
       },
       createdAt: {
         allowNull: false,

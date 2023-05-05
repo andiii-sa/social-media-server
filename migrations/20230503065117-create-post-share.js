@@ -5,25 +5,17 @@ module.exports = {
     await queryInterface.createTable("post_shares", {
       id: {
         allowNull: false,
-        autoIncrement: true,
         primaryKey: true,
-        type: Sequelize.INTEGER,
+        type: Sequelize.UUID,
+        defaultValue: Sequelize.UUIDV4,
       },
       user_id: {
-        type: Sequelize.INTEGER,
+        type: Sequelize.UUID,
         allowNull: false,
-        references: {
-          model: "users",
-          key: "id",
-        },
       },
       post_id: {
-        type: Sequelize.INTEGER,
+        type: Sequelize.UUID,
         allowNull: false,
-        references: {
-          model: "posts",
-          key: "id",
-        },
       },
       tweet: {
         type: Sequelize.TEXT,
