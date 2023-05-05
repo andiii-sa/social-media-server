@@ -9,11 +9,11 @@ module.exports = {
         type: Sequelize.UUID,
         defaultValue: Sequelize.UUIDV4,
       },
-      user_id: {
+      userId: {
         type: Sequelize.UUID,
         allowNull: false,
       },
-      follower_id: {
+      followerId: {
         type: Sequelize.UUID,
         allowNull: false,
       },
@@ -30,7 +30,7 @@ module.exports = {
     await queryInterface.addConstraint("followers", {
       type: "foreign key",
       name: "FOLLOWERS_USER_ID",
-      fields: ["user_id"],
+      fields: ["userId"],
       references: {
         table: "users",
         field: "id",
@@ -41,7 +41,7 @@ module.exports = {
     await queryInterface.addConstraint("followers", {
       type: "foreign key",
       name: "FOLLOWERS_FOLLOWER_ID",
-      fields: ["follower_id"],
+      fields: ["followerId"],
       references: {
         table: "users",
         field: "id",

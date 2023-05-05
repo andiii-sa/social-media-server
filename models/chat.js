@@ -11,12 +11,12 @@ module.exports = (sequelize, DataTypes) => {
      */
     static associate(models) {
       this.hasMany(models.chat_member, {
-        foreignKey: "chat_id",
+        foreignKey: "chatId",
         onDelete: "CASCADE",
         onUpdate: "CASCADE",
       });
       this.hasMany(models.chat_message, {
-        foreignKey: "chat_id",
+        foreignKey: "chatId",
         onDelete: "CASCADE",
         onUpdate: "CASCADE",
       });
@@ -30,9 +30,9 @@ module.exports = (sequelize, DataTypes) => {
         type: DataTypes.UUID,
         defaultValue: DataTypes.UUIDV4,
       },
-      is_group: {
+      isGroup: {
         type: DataTypes.BOOLEAN,
-        allowNull: false,
+        allowNull: true,
       },
       title: {
         type: DataTypes.TEXT,

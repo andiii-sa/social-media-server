@@ -9,11 +9,11 @@ module.exports = {
         type: Sequelize.UUID,
         defaultValue: Sequelize.UUIDV4,
       },
-      user_id: {
+      userId: {
         type: Sequelize.UUID,
         allowNull: false,
       },
-      post_id: {
+      postId: {
         type: Sequelize.UUID,
         allowNull: false,
       },
@@ -38,7 +38,7 @@ module.exports = {
     await queryInterface.addConstraint("post_comments", {
       type: "foreign key",
       name: "POSTCOMMENTS_USER_ID",
-      fields: ["user_id"],
+      fields: ["userId"],
       references: {
         table: "users",
         field: "id",
@@ -49,7 +49,7 @@ module.exports = {
     await queryInterface.addConstraint("post_comments", {
       type: "foreign key",
       name: "POSTCOMMENTS_POST_ID",
-      fields: ["post_id"],
+      fields: ["postId"],
       references: {
         table: "posts",
         field: "id",

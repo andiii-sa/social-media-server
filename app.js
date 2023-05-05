@@ -8,6 +8,7 @@ const cors = require("cors");
 var indexRouter = require("./routes/index");
 var userRouter = require("./routes/user");
 var authRouter = require("./routes/auth");
+var chatTwitterRouter = require("./routes/chatTwitter");
 
 var app = express();
 const URL = `/api/v1`;
@@ -24,5 +25,6 @@ app.use("/", indexRouter);
 // API V1
 app.use(`${URL}/auth`, authRouter);
 app.use(`${URL}/user`, userRouter);
+app.use(`${URL}/twitter`, chatTwitterRouter);
 
 module.exports = app;

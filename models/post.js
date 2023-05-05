@@ -15,17 +15,17 @@ module.exports = (sequelize, DataTypes) => {
       this.belongsTo(models.user);
 
       this.hasMany(models.post_share, {
-        foreignKey: "post_id",
+        foreignKey: "postId",
         onDelete: "CASCADE",
         onUpdate: "CASCADE",
       });
       this.hasMany(models.post_like, {
-        foreignKey: "post_id",
+        foreignKey: "postId",
         onDelete: "CASCADE",
         onUpdate: "CASCADE",
       });
       this.hasMany(models.post_comment, {
-        foreignKey: "post_id",
+        foreignKey: "postId",
         onDelete: "CASCADE",
         onUpdate: "CASCADE",
       });
@@ -39,7 +39,7 @@ module.exports = (sequelize, DataTypes) => {
         type: DataTypes.UUID,
         defaultValue: DataTypes.UUIDV4,
       },
-      user_id: {
+      userId: {
         type: DataTypes.UUID,
         allowNull: false,
         references: {

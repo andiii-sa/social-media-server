@@ -9,11 +9,11 @@ module.exports = {
         type: Sequelize.UUID,
         defaultValue: Sequelize.UUIDV4,
       },
-      chat_id: {
+      chatId: {
         type: Sequelize.UUID,
         allowNull: false,
       },
-      user_id: {
+      userId: {
         type: Sequelize.UUID,
         allowNull: false,
       },
@@ -30,7 +30,7 @@ module.exports = {
     await queryInterface.addConstraint("chat_members", {
       type: "foreign key",
       name: "CHATMEMBERS_USER_ID",
-      fields: ["user_id"],
+      fields: ["userId"],
       references: {
         table: "users",
         field: "id",
@@ -41,7 +41,7 @@ module.exports = {
     await queryInterface.addConstraint("chat_members", {
       type: "foreign key",
       name: "CHATMEMBERS_CHAT_ID",
-      fields: ["chat_id"],
+      fields: ["chatId"],
       references: {
         table: "chats",
         field: "id",

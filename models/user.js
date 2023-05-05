@@ -4,7 +4,7 @@ module.exports = (sequelize, DataTypes) => {
   class user extends Model {
     static associate(models) {
       this.hasMany(models.following, {
-        foreignKey: "user_id",
+        foreignKey: "userId",
         onDelete: "CASCADE",
         onUpdate: "CASCADE",
       });
@@ -14,7 +14,7 @@ module.exports = (sequelize, DataTypes) => {
         onUpdate: "CASCADE",
       });
       this.hasMany(models.follower, {
-        foreignKey: "user_id",
+        foreignKey: "userId",
         onDelete: "CASCADE",
         onUpdate: "CASCADE",
       });
@@ -24,32 +24,32 @@ module.exports = (sequelize, DataTypes) => {
         onUpdate: "CASCADE",
       });
       this.hasMany(models.post, {
-        foreignKey: "user_id",
+        foreignKey: "userId",
         onDelete: "CASCADE",
         onUpdate: "CASCADE",
       });
       this.hasMany(models.post_share, {
-        foreignKey: "user_id",
+        foreignKey: "userId",
         onDelete: "CASCADE",
         onUpdate: "CASCADE",
       });
       this.hasMany(models.post_like, {
-        foreignKey: "user_id",
+        foreignKey: "userId",
         onDelete: "CASCADE",
         onUpdate: "CASCADE",
       });
       this.hasMany(models.post_comment, {
-        foreignKey: "user_id",
+        foreignKey: "userId",
         onDelete: "CASCADE",
         onUpdate: "CASCADE",
       });
       this.hasMany(models.chat_member, {
-        foreignKey: "user_id",
+        foreignKey: "userId",
         onDelete: "CASCADE",
         onUpdate: "CASCADE",
       });
       this.hasMany(models.chat_message, {
-        foreignKey: "user_id",
+        foreignKey: "userId",
         onDelete: "CASCADE",
         onUpdate: "CASCADE",
       });

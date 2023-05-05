@@ -22,7 +22,7 @@ module.exports = (sequelize, DataTypes) => {
         type: DataTypes.UUID,
         defaultValue: DataTypes.UUIDV4,
       },
-      chat_id: {
+      chatId: {
         type: DataTypes.UUID,
         allowNull: false,
         references: {
@@ -30,7 +30,7 @@ module.exports = (sequelize, DataTypes) => {
           key: "id",
         },
       },
-      user_id: {
+      userId: {
         type: DataTypes.UUID,
         allowNull: false,
         references: {
