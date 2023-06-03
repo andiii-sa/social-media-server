@@ -13,11 +13,15 @@ module.exports = {
         type: Sequelize.UUID,
         allowNull: false,
       },
-      tweet: {
+      text: {
         type: Sequelize.TEXT,
         allowNull: true,
       },
       image: {
+        type: Sequelize.TEXT,
+        allowNull: true,
+      },
+      video: {
         type: Sequelize.TEXT,
         allowNull: true,
       },

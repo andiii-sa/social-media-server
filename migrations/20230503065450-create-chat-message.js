@@ -25,6 +25,10 @@ module.exports = {
         type: Sequelize.TEXT,
         allowNull: true,
       },
+      video: {
+        type: Sequelize.TEXT,
+        allowNull: true,
+      },
       createdAt: {
         allowNull: false,
         type: Sequelize.DATE,

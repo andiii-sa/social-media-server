@@ -17,7 +17,7 @@ module.exports = {
         type: Sequelize.UUID,
         allowNull: false,
       },
-      tweet: {
+      text: {
         type: Sequelize.TEXT,
         allowNull: true,
       },

@@ -47,11 +47,15 @@ module.exports = (sequelize, DataTypes) => {
           key: "id",
         },
       },
-      tweet: {
+      text: {
         type: DataTypes.TEXT,
         allowNull: true,
       },
       image: {
+        type: DataTypes.TEXT,
+        allowNull: true,
+      },
+      video: {
         type: DataTypes.TEXT,
         allowNull: true,
       },
