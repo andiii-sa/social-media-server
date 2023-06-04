@@ -2,49 +2,23 @@ const { chat, chat_member, chat_message } = require("../../../models");
 
 module.exports = async (req, res) => {
   try {
-    const { chatId, receiverId, text, image, isGroup, title } = req.body;
-    let realChatId = chatId;
+    const { chatId, text, image } = req.body;
 
-    if (chatId) {
-      const validChatId = await chat.findOne({
-        where: {
-          id: chatId,
-        },
-      });
+    const validChatId = await chat.findOne({
+      where: {
+        id: chatId,
+      },
+    });
 
-      // Create Chat ID
-      if (!validChatId) {
-        const createChat = await chat.create({
-          isGroup: isGroup,
-          title: title,
-        });
-        const createChatMemberSender = await chat_member.create({
-          chatId: createChat.id,
-          userId: req.user.id,
-        });
-        const createChatMemberReceiver = await chat_member.create({
-          chatId: createChat.id,
-          userId: receiverId,
-        });
-        realChatId = createChat.id;
-      }
-    } else {
-      const createChat = await chat.create({
-        isGroup: isGroup,
-        title: title,
+    // valid chat id
+    if (!validChatId) {
+      return res.status(404).json({
+        message: "invalid id chat",
       });
-      const createChatMemberSender = await chat_member.create({
-        chatId: createChat.id,
-        userId: req.user.id,
-      });
-      const createChatMemberReceiver = await chat_member.create({
-        chatId: createChat.id,
-        userId: receiverId,
-      });
-      realChatId = createChat.id;
     }
+
     const createChatMessage = await chat_message.create({
-      chatId: realChatId,
+      chatId: chatId,
       userId: req.user.id,
       text: text,
       //   image:imageUrl

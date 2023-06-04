@@ -16,5 +16,29 @@ router.post(
   permission("admin"),
   chatTwitterController.message
 );
+router.get(
+  "/message-list/:chatId",
+  verifyToken,
+  permission("admin"),
+  chatTwitterController.listMessage
+);
+router.get(
+  "/findidchat/:idUser",
+  verifyToken,
+  permission("admin"),
+  chatTwitterController.findIdChat
+);
+router.get(
+  "/user-search",
+  verifyToken,
+  permission("admin"),
+  chatTwitterController.userSearch
+);
+router.get(
+  "/user-profile/:username",
+  verifyToken,
+  permission("admin"),
+  chatTwitterController.userProfile
+);
 
 module.exports = router;

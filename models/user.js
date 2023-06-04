@@ -9,7 +9,7 @@ module.exports = (sequelize, DataTypes) => {
         onUpdate: "CASCADE",
       });
       this.hasMany(models.following, {
-        foreignKey: "following_id",
+        foreignKey: "followingId",
         onDelete: "CASCADE",
         onUpdate: "CASCADE",
       });
@@ -19,7 +19,7 @@ module.exports = (sequelize, DataTypes) => {
         onUpdate: "CASCADE",
       });
       this.hasMany(models.follower, {
-        foreignKey: "follower_id",
+        foreignKey: "followerId",
         onDelete: "CASCADE",
         onUpdate: "CASCADE",
       });

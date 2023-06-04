@@ -1,3 +1,4 @@
+const { Op } = require("sequelize");
 const {
   user,
   chat_member,
@@ -15,16 +16,29 @@ module.exports = async (req, res) => {
       },
       include: [
         {
-          model: user,
-          attributes: ["id", "name", "email"],
-        },
-        {
           model: chat,
           attributes: ["id"],
           include: [
             {
               model: chat_message,
-              attributes: ["id", "text"],
+              attributes: ["id", "text", "createdAt"],
+              include: [
+                {
+                  model: user,
+                  attributes: ["id", "name"],
+                },
+              ],
+              separate: true,
+              order: [["createdAt", "DESC"]],
+              limit: 1,
+            },
+            {
+              model: chat_member,
+              where: {
+                userId: {
+                  [Op.not]: req.user.id,
+                },
+              },
               include: [
                 {
                   model: user,
