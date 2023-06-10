@@ -6,9 +6,7 @@ module.exports = async (req, res) => {
     const { keywords } = req.query;
 
     const listUser = await user.findAll({
-      attributes: {
-        exclude: ["password"],
-      },
+      attributes: ["id", "name", "username", "email", "photo"],
       where: {
         [Op.or]: [
           {

@@ -4,6 +4,8 @@ const findIdChat = require("./findIdChat");
 const userSearch = require("./userSearch");
 const userProfile = require("./userProfile");
 const listMessage = require("./listMessage");
+const follow = require("./userFollow");
+const unfollow = require("./userUnfollow");
 
 module.exports = {
   message,
@@ -12,4 +14,6 @@ module.exports = {
   userSearch,
   userProfile,
   listMessage,
+  follow,
+  unfollow,
 };

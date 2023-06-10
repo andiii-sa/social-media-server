@@ -41,4 +41,16 @@ router.get(
   chatTwitterController.userProfile
 );
 
+router.post(
+  "/follow/:id",
+  verifyToken,
+  permission("admin"),
+  chatTwitterController.follow
+);
+router.post(
+  "/unfollow/:id",
+  verifyToken,
+  permission("admin"),
+  chatTwitterController.unfollow
+);
 module.exports = router;

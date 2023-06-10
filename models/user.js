@@ -5,24 +5,30 @@ module.exports = (sequelize, DataTypes) => {
     static associate(models) {
       this.hasMany(models.following, {
         foreignKey: "userId",
+        as: "followings",
         onDelete: "CASCADE",
         onUpdate: "CASCADE",
       });
       this.hasMany(models.following, {
         foreignKey: "followingId",
+        as: "userFollowing",
         onDelete: "CASCADE",
         onUpdate: "CASCADE",
       });
+
       this.hasMany(models.follower, {
         foreignKey: "userId",
+        as: "followers",
         onDelete: "CASCADE",
         onUpdate: "CASCADE",
       });
       this.hasMany(models.follower, {
         foreignKey: "followerId",
+        as: "userFollowers",
         onDelete: "CASCADE",
         onUpdate: "CASCADE",
       });
+
       this.hasMany(models.post, {
         foreignKey: "userId",
         onDelete: "CASCADE",
