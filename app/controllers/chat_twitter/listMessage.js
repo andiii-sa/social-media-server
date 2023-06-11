@@ -11,6 +11,18 @@ module.exports = async (req, res) => {
   try {
     const { chatId } = req.params;
 
+    const findChatId = await chat.findOne({
+      where: {
+        id: chatId,
+      },
+    });
+
+    if (!findChatId) {
+      return res.status(404).json({
+        message: "Chat tidak ditemukan",
+      });
+    }
+
     const listMessage = await chat_message.findAll({
       where: {
         chatId: chatId,

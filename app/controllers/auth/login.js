@@ -43,6 +43,7 @@ module.exports = async (req, res) => {
     return res.json({
       message: "Success login",
       data: {
+        id: hasUser.id,
         token: token,
         name: hasUser.name,
         username: hasUser.username,

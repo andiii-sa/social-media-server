@@ -11,6 +11,9 @@ module.exports = async (req, res) => {
   try {
     // ambil semua data di chat member, dimana userId
     const listChatMessage = await chat_member.findAll({
+      attributes: {
+        exclude: ["createdAt", "updatedAt"],
+      },
       where: {
         userId: req.user.id,
       },
@@ -21,19 +24,22 @@ module.exports = async (req, res) => {
           include: [
             {
               model: chat_message,
-              attributes: ["id", "text", "createdAt"],
+              attributes: ["id", "text", "userId", "createdAt"],
+              separate: true,
+              order: [["createdAt", "DESC"]],
+              limit: 1,
               include: [
                 {
                   model: user,
                   attributes: ["id", "name"],
                 },
               ],
-              separate: true,
-              order: [["createdAt", "DESC"]],
-              limit: 1,
             },
             {
               model: chat_member,
+              attributes: {
+                exclude: ["createdAt", "updatedAt", "userId", "chatId"],
+              },
               where: {
                 userId: {
                   [Op.not]: req.user.id,
@@ -42,7 +48,7 @@ module.exports = async (req, res) => {
               include: [
                 {
                   model: user,
-                  attributes: ["id", "name"],
+                  attributes: ["id", "name", "photo", "username"],
                 },
               ],
             },

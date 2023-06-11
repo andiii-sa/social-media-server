@@ -12,6 +12,12 @@ module.exports = async (req, res) => {
   try {
     const { username } = req.params;
 
+    if (!username) {
+      return res.status(404).json({
+        message: "User tidak ditemukan",
+      });
+    }
+
     const userDetail = await user.findOne({
       attributes: {
         exclude: [
@@ -99,6 +105,7 @@ module.exports = async (req, res) => {
       ),
       countFollower: userDetail?.followers?.length ?? 0,
       countFollowing: userDetail?.followings?.length ?? 0,
+      countPosts: userDetail?.posts?.length ?? 0,
       chatId: findChatId?.chatId ?? null,
     };
 
