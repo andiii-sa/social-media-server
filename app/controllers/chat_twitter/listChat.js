@@ -57,9 +57,16 @@ module.exports = async (req, res) => {
       ],
     });
 
+    const refChatList = listChatMessage?.map((chat) => ({
+      chatId: chat?.chatId,
+      id: chat?.id,
+      user: chat?.chat?.chat_members?.[0]?.user,
+      messages: chat?.chat?.chat_messages?.[0],
+    }));
+
     return res.json({
       message: "Success",
-      data: listChatMessage,
+      data: refChatList,
     });
   } catch (error) {
     console.log("error", error);

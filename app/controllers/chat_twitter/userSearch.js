@@ -3,10 +3,11 @@ const { user, chat_member, chat_message, chat } = require("../../../models");
 
 module.exports = async (req, res) => {
   try {
-    const { keywords } = req.query;
+    const { keywords = "", limit = 5, offset = 0 } = req.query;
 
     const listUser = await user.findAll({
-      attributes: ["id", "name", "username", "email", "photo"],
+      attributes: ["id", "name", "username", "email", "photo", "createdAt"],
+      subQuery: false,
       where: {
         [Op.or]: [
           {
@@ -21,6 +22,9 @@ module.exports = async (req, res) => {
           },
         ],
       },
+      limit: parseInt(limit),
+      offset: parseInt(offset * limit),
+      // offset: parseInt((offset - 1) * limit),
     });
 
     return res.json({
