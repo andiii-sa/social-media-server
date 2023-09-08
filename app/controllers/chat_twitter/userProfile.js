@@ -64,7 +64,7 @@ module.exports = async (req, res) => {
 
     const findChatId = await chat_member.findOne({
       where: {
-        userId: req.user.id,
+        userId: userDetail?.id,
       },
       include: [
         {
@@ -73,7 +73,7 @@ module.exports = async (req, res) => {
             {
               model: chat_member,
               where: {
-                userId: userDetail?.id,
+                userId: req.user.id,
               },
             },
           ],
