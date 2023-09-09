@@ -6,6 +6,7 @@ const userProfile = require("./userProfile");
 const listMessage = require("./listMessage");
 const follow = require("./userFollow");
 const unfollow = require("./userUnfollow");
+const postCreate = require("./postCreate");
 
 module.exports = {
   message,
@@ -16,4 +17,5 @@ module.exports = {
   listMessage,
   follow,
   unfollow,
+  postCreate,
 };

@@ -3,6 +3,7 @@ const router = express.Router();
 const chatTwitterController = require("../app/controllers/chat_twitter");
 const verifyToken = require("../app/middleware/verify_token");
 const permission = require("../app/middleware/permission");
+const { uploadPostSingle } = require("../app/middleware/multer");
 
 router.get(
   "/list",
@@ -52,5 +53,12 @@ router.post(
   verifyToken,
   permission("admin"),
   chatTwitterController.unfollow
+);
+router.post(
+  "/post",
+  uploadPostSingle,
+  verifyToken,
+  permission("admin"),
+  chatTwitterController.postCreate
 );
 module.exports = router;
