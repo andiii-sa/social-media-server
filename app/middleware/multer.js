@@ -61,7 +61,13 @@ function checkFileType(file, cb) {
 const storagePostSingle = multer.diskStorage({
   destination: `public/${process.env.ROOT_FOLDER_IMAGE_POST}`,
   filename: function (req, file, cb) {
-    cb(null, Date.now() + "." + file.originalname);
+    cb(
+      null,
+      Date.now() +
+        `${Math.floor(Math.random() * 101)}` +
+        "." +
+        file.originalname
+    );
   },
 });
 

@@ -61,4 +61,16 @@ router.post(
   permission("admin"),
   chatTwitterController.postCreate
 );
+router.get(
+  "/dashboard/post",
+  verifyToken,
+  permission("admin"),
+  chatTwitterController.dashboardPost
+);
+router.get(
+  "/dashboard/user-suggest",
+  verifyToken,
+  permission("admin"),
+  chatTwitterController.userSuggest
+);
 module.exports = router;
