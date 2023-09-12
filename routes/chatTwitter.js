@@ -61,6 +61,24 @@ router.post(
   permission("admin"),
   chatTwitterController.postCreate
 );
+router.post(
+  "/post/:id/add-comment",
+  verifyToken,
+  permission("admin"),
+  chatTwitterController.postAddComment
+);
+router.post(
+  "/post/:id/add-like",
+  verifyToken,
+  permission("admin"),
+  chatTwitterController.postAddLike
+);
+router.get(
+  "/post/:id",
+  verifyToken,
+  permission("admin"),
+  chatTwitterController.postDetail
+);
 router.get(
   "/dashboard/post",
   verifyToken,

@@ -9,6 +9,7 @@ const {
   follower,
   post_like,
   Sequelize,
+  post_comment,
 } = require("../../../models");
 
 module.exports = async (req, res) => {
@@ -32,9 +33,15 @@ module.exports = async (req, res) => {
         include: [
           [
             Sequelize.literal(
-              "(SELECT COUNT(*) WHERE post_likes.postId = post.id)"
+              "(SELECT COUNT(*) from post_likes WHERE post_likes.postId = post.id)"
             ),
             "post_like_count",
+          ],
+          [
+            Sequelize.literal(
+              "(SELECT COUNT(*) from post_comments WHERE post_comments.postId = post.id)"
+            ),
+            "post_comment_count",
           ],
         ],
       },
@@ -55,19 +62,24 @@ module.exports = async (req, res) => {
         },
         {
           model: post_like,
-          required: false,
-          attributes: [],
+          // required: false,
+          attributes: ["id", "userId"],
+        },
+        {
+          model: post_comment,
+          // required: false,
         },
       ],
     });
 
-    // const mapPost = listPost?.filter(
-    //   (f) => f?.userId === req.user.id || f?.user?.followers?.length > 0
-    // );
+    const mapPost = JSON.parse(JSON.stringify(listPost))?.map((post) => ({
+      ...post,
+      is_like: post?.post_likes?.some((s) => s?.userId === req?.user?.id),
+    }));
 
     return res.json({
       message: "Success",
-      data: listPost,
+      data: mapPost,
     });
   } catch (error) {
     console.log("error", error);
