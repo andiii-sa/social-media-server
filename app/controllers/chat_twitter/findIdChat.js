@@ -1,4 +1,4 @@
-const { user, chat_member, chat_message, chat } = require("../../../models");
+const { chat_member, chat } = require("../../../models");
 
 module.exports = async (req, res) => {
   try {

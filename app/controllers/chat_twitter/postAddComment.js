@@ -1,4 +1,4 @@
-const { post, post_comment } = require("../../../models");
+const { post_comment } = require("../../../models");
 
 module.exports = async (req, res) => {
   try {

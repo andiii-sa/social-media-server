@@ -1,16 +1,8 @@
-const { Op } = require("sequelize");
-const {
-  user,
-  chat_message,
-  chat,
-  chat_member,
-  post_comment,
-} = require("../../../models");
+const { user, post_comment } = require("../../../models");
 
 module.exports = (io) => {
   // Socket.io
   let ioSocket = io.of("/message-post-comment");
-  let users = [];
   ioSocket.on("connection", (socket) => {
     const roomPostId = socket.handshake.query?.postId;
     console.log("roomPostId", roomPostId);

@@ -1,11 +1,6 @@
-const { Op } = require("sequelize");
 const {
   user,
   post,
-  follower,
-  following,
-  chat_member,
-  chat,
   post_comment,
   post_like,
   Sequelize,

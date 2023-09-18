@@ -1,11 +1,4 @@
-const { Op } = require("sequelize");
-const {
-  user,
-  chat_member,
-  chat_message,
-  sequelize,
-  chat,
-} = require("../../../models");
+const { chat_message, chat } = require("../../../models");
 
 module.exports = async (req, res) => {
   try {

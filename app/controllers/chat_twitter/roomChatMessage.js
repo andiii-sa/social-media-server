@@ -3,8 +3,9 @@ const { user, chat_message, chat, chat_member } = require("../../../models");
 
 module.exports = (io) => {
   // Socket.io
+  let ioSocket = io.of("/message-chat");
   let users = [];
-  io.of("/message-chat").on("connection", (socket) => {
+  ioSocket.on("connection", (socket) => {
     console.log("User connected", socket.id);
     socket.on("addUser", (data) => {
       const isUserExist = users.find(
@@ -20,7 +21,7 @@ module.exports = (io) => {
           (user) => user.userId === data?.userId && user?.socketId === socket.id
         );
         users[findIndex] = user;
-        io.of("/message-chat").emit("getUsers", users);
+        ioSocket.emit("getUsers", users);
       }
       if (!isUserExist) {
         const user = {
@@ -29,7 +30,7 @@ module.exports = (io) => {
           socketId: socket.id,
         };
         users.push(user);
-        io.of("/message-chat").emit("getUsers", users);
+        ioSocket.emit("getUsers", users);
       }
     });
 
@@ -176,32 +177,28 @@ module.exports = (io) => {
       console.log("sender :>> ", sender, receiver);
       if (createChatMessage) {
         if (receiver) {
-          io.of("/message-chat")
+          ioSocket
             .to(receiver.socketId)
             .to(sender.socketId)
             .emit("getMessage", payloadMessage);
 
-          io.of("/message-chat")
+          ioSocket
             .to(sender.socketId)
             .emit("getChatList", payloadSenderChatMessage);
-          io.of("/message-chat")
+          ioSocket
             .to(receiver.socketId)
             .emit("getChatList", payloadReceiverChatMessage);
         } else {
-          io.of("/message-chat")
-            .to(sender.socketId)
-            .emit("getMessage", payloadMessage);
-          io.of("/message-chat")
+          ioSocket.to(sender.socketId).emit("getMessage", payloadMessage);
+          ioSocket
             .to(sender.socketId)
             .emit("getChatList", payloadSenderChatMessage);
         }
       } else {
-        io.of("/message-chat")
-          .to(sender.socketId)
-          .emit("getMessage", {
-            ...payloadMessage,
-            isFailed: true,
-          });
+        ioSocket.to(sender.socketId).emit("getMessage", {
+          ...payloadMessage,
+          isFailed: true,
+        });
       }
     });
 
