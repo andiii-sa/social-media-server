@@ -1,94 +1,94 @@
 const express = require("express");
 const router = express.Router();
-const chatTwitterController = require("../app/controllers/chat_twitter");
+const instagramController = require("../app/controllers/instagram");
 const verifyToken = require("../app/middleware/verify_token");
 const permission = require("../app/middleware/permission");
 const { uploadPostSingle } = require("../app/middleware/multer");
 
 router.get(
-  "/list",
+  "/list-chat",
   verifyToken,
   permission("admin"),
-  chatTwitterController.listChat
+  instagramController.listChat
 );
 router.post(
   "/message",
   verifyToken,
   permission("admin"),
-  chatTwitterController.message
+  instagramController.message
 );
 router.get(
   "/message-list/:chatId",
   verifyToken,
   permission("admin"),
-  chatTwitterController.listMessage
+  instagramController.listMessage
 );
 router.get(
-  "/findidchat/:idUser",
+  "/find-id-chat/:idUser",
   verifyToken,
   permission("admin"),
-  chatTwitterController.findIdChat
+  instagramController.findIdChat
 );
 router.get(
   "/user-search",
   verifyToken,
   permission("admin"),
-  chatTwitterController.userSearch
+  instagramController.userSearch
 );
 router.get(
   "/user-profile/:username",
   verifyToken,
   permission("admin"),
-  chatTwitterController.userProfile
+  instagramController.userProfile
 );
 
 router.post(
   "/follow/:id",
   verifyToken,
   permission("admin"),
-  chatTwitterController.follow
+  instagramController.follow
 );
 router.post(
   "/unfollow/:id",
   verifyToken,
   permission("admin"),
-  chatTwitterController.unfollow
+  instagramController.unfollow
 );
 router.post(
   "/post",
   uploadPostSingle,
   verifyToken,
   permission("admin"),
-  chatTwitterController.postCreate
+  instagramController.postCreate
 );
 router.post(
   "/post/:id/add-comment",
   verifyToken,
   permission("admin"),
-  chatTwitterController.postAddComment
+  instagramController.postAddComment
 );
 router.post(
   "/post/:id/add-like",
   verifyToken,
   permission("admin"),
-  chatTwitterController.postAddLike
+  instagramController.postAddLike
 );
 router.get(
   "/post/:id",
   verifyToken,
   permission("admin"),
-  chatTwitterController.postDetail
+  instagramController.postDetail
 );
 router.get(
   "/dashboard/post",
   verifyToken,
   permission("admin"),
-  chatTwitterController.dashboardPost
+  instagramController.dashboardPost
 );
 router.get(
   "/dashboard/user-suggest",
   verifyToken,
   permission("admin"),
-  chatTwitterController.userSuggest
+  instagramController.userSuggest
 );
 module.exports = router;

@@ -1,5 +1,5 @@
-const roomChatMessage = require("../app/controllers/chat_twitter/roomChatMessage");
-const roomPostCommentMessage = require("../app/controllers/chat_twitter/roomPostCommentMessage");
+const roomChatMessage = require("../app/controllers/instagram/roomChatMessage");
+const roomPostCommentMessage = require("../app/controllers/instagram/roomPostCommentMessage");
 
 module.exports = (io) => {
   roomChatMessage(io);
