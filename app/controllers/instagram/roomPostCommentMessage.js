@@ -45,10 +45,10 @@ module.exports = (io) => {
         createdAt: detailCommentMessage?.createdAt,
         id: detailCommentMessage?.id,
         image: detailCommentMessage?.image,
-        text: detailCommentMessage?.text,
+        text: detailCommentMessage?.text ?? text,
         updatedAt: detailCommentMessage?.updatedAt,
         user: detailCommentMessage?.user,
-        userId: detailCommentMessage?.userId,
+        userId: detailCommentMessage?.userId ?? userId,
         isFailed: false,
       };
 
