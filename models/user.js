@@ -59,6 +59,21 @@ module.exports = (sequelize, DataTypes) => {
         onDelete: "CASCADE",
         onUpdate: "CASCADE",
       });
+      this.hasMany(models.blog, {
+        foreignKey: "authorId",
+        onDelete: "SET NULL",
+        onUpdate: "CASCADE",
+      });
+      this.hasMany(models.presence_employee, {
+        foreignKey: "employeeId",
+        onDelete: "CASCADE",
+        onUpdate: "CASCADE",
+      });
+      this.hasMany(models.presence_schedule_employee, {
+        foreignKey: "employeeId",
+        onDelete: "CASCADE",
+        onUpdate: "CASCADE",
+      });
     }
   }
   user.init(
