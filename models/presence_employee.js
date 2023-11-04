@@ -48,6 +48,14 @@ module.exports = (sequelize, DataTypes) => {
         type: DataTypes.TEXT,
         allowNull: false,
       },
+      clockIn: {
+        type: DataTypes.TIME,
+        allowNull: true,
+      },
+      clockOut: {
+        type: DataTypes.TIME,
+        allowNull: true,
+      },
       image: {
         type: DataTypes.TEXT,
         allowNull: true,

@@ -39,11 +39,17 @@ module.exports = async (req, res) => {
         post_like_count,
         is_like: find ? false : true,
       },
+      meta: {
+        status: 200,
+      },
     });
   } catch (error) {
     console.log("error", error);
     return res.status(500).json({
       message: error?.errors || "Server Internal Error",
+      meta: {
+        status: 500,
+      },
     });
   }
 };

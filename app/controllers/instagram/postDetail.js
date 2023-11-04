@@ -72,6 +72,9 @@ module.exports = async (req, res) => {
     if (!postDetail) {
       return res.status(404).json({
         message: "Post tidak ditemukan",
+        meta: {
+          status: 404,
+        },
       });
     }
     postDetail.dataValues.is_like = postDetail?.post_likes?.some(
@@ -81,11 +84,17 @@ module.exports = async (req, res) => {
     return res.json({
       message: "Success",
       data: postDetail,
+      meta: {
+        status: 200,
+      },
     });
   } catch (error) {
     console.log("error", error);
     return res.status(500).json({
       message: error?.errors || "Server Internal Error",
+      meta: {
+        status: 500,
+      },
     });
   }
 };

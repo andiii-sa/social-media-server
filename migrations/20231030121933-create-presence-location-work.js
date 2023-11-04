@@ -15,11 +15,11 @@ module.exports = {
         allowNull: false,
       },
       clockIn: {
-        type: Sequelize.STRING,
+        type: Sequelize.TIME,
         allowNull: false,
       },
       clockOut: {
-        type: Sequelize.STRING,
+        type: Sequelize.TIME,
         allowNull: false,
       },
       isRequiredLocation: {

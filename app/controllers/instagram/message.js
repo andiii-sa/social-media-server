@@ -14,6 +14,9 @@ module.exports = async (req, res) => {
     if (!validChatId) {
       return res.status(404).json({
         message: "invalid id chat",
+        meta: {
+          status: 404,
+        },
       });
     }
 
@@ -27,11 +30,17 @@ module.exports = async (req, res) => {
     return res.json({
       message: "Success Message",
       data: createChatMessage,
+      meta: {
+        status: 200,
+      },
     });
   } catch (error) {
     console.log("error", error);
     return res.status(500).json({
       message: error?.errors || "Server Internal Error",
+      meta: {
+        status: 500,
+      },
     });
   }
 };

@@ -28,11 +28,11 @@ module.exports = (sequelize, DataTypes) => {
         allowNull: false,
       },
       clockIn: {
-        type: DataTypes.TEXT,
+        type: DataTypes.TIME,
         allowNull: false,
       },
       clockOut: {
-        type: DataTypes.TEXT,
+        type: DataTypes.TIME,
         allowNull: false,
       },
       isRequiredLocation: {

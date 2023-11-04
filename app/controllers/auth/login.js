@@ -19,6 +19,9 @@ module.exports = async (req, res) => {
     if (!hasUser) {
       return res.status(404).json({
         message: "Akun tidak ditemukan",
+        meta: {
+          status: 404,
+        },
       });
     }
 
@@ -26,6 +29,9 @@ module.exports = async (req, res) => {
     if (!isValidPassword)
       return res.status(409).json({
         message: "Email atau password salah",
+        meta: {
+          status: 409,
+        },
       });
 
     const token = jwt.sign(
@@ -51,11 +57,17 @@ module.exports = async (req, res) => {
         email: hasUser.email,
         photo: hasUser.photo,
       },
+      meta: {
+        status: 200,
+      },
     });
   } catch (error) {
     console.log("error", error);
     return res.status(500).json({
       message: error?.errors || "Server Internal Error",
+      meta: {
+        status: 500,
+      },
     });
   }
 };

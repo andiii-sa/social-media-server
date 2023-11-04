@@ -1,6 +1,10 @@
 const multer = require("multer");
 const path = require("path");
 const fs = require("fs");
+const {
+  ROOT_FOLDER_IMAGE_BLOG,
+  ROOT_FOLDER_IMAGE_POST,
+} = require("../utils/constants/urlBasePhoto");
 // import uuid from "uuid/v4";
 
 const storageMultiple = multer.diskStorage({
@@ -59,7 +63,7 @@ function checkFileType(file, cb) {
 // NEWWWWWWWWWWWWWWWWWWWWWW
 // Set storage engine
 const storagePostSingle = multer.diskStorage({
-  destination: `public/${process.env.ROOT_FOLDER_IMAGE_POST}`,
+  destination: `public/${ROOT_FOLDER_IMAGE_POST}`,
   filename: function (req, file, cb) {
     cb(
       null,
@@ -75,4 +79,20 @@ const uploadPostSingle = multer({
   storage: storagePostSingle,
 }).single("image");
 
-module.exports = { uploadMultiple, upload, uploadPostSingle };
+const storageBlogSingle = multer.diskStorage({
+  destination: `public/${ROOT_FOLDER_IMAGE_BLOG}`,
+  filename: function (req, file, cb) {
+    cb(
+      null,
+      Date.now() +
+        `${Math.floor(Math.random() * 101)}` +
+        "." +
+        file.originalname
+    );
+  },
+});
+const uploadBlogSingle = multer({
+  storage: storageBlogSingle,
+}).single("image");
+
+module.exports = { uploadMultiple, upload, uploadPostSingle, uploadBlogSingle };

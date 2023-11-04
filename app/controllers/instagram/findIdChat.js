@@ -45,11 +45,17 @@ module.exports = async (req, res) => {
       data: {
         chatId: idChat,
       },
+      meta: {
+        status: 200,
+      },
     });
   } catch (error) {
     console.log("error", error);
     return res.status(500).json({
       message: error?.errors || "Server Internal Error",
+      meta: {
+        status: 500,
+      },
     });
   }
 };

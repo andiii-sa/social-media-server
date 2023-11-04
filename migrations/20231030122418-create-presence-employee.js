@@ -22,6 +22,14 @@ module.exports = {
         type: Sequelize.TEXT,
         allowNull: false,
       },
+      clockIn: {
+        type: Sequelize.TIME,
+        allowNull: true,
+      },
+      clockOut: {
+        type: Sequelize.TIME,
+        allowNull: true,
+      },
       image: {
         type: Sequelize.TEXT,
         allowNull: true,
