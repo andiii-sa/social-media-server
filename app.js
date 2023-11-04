@@ -15,6 +15,7 @@ var indexRouter = require("./routes/index");
 var userRouter = require("./routes/user");
 var authRouter = require("./routes/auth");
 var instagramRouter = require("./routes/instagram");
+var blogRouter = require("./routes/blog");
 
 var roomSocket = require("./routes/roomSocket");
 roomSocket(io);
@@ -35,5 +36,6 @@ app.use("/", indexRouter);
 app.use(`${URL}/auth`, authRouter);
 app.use(`${URL}/user`, userRouter);
 app.use(`${URL}/instagram`, instagramRouter);
+app.use(`${URL}/blog`, blogRouter);
 
 module.exports = app;

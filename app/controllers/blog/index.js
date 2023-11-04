@@ -10,6 +10,8 @@ const {
   blogCategoryDelete,
   blogCategoryDetail,
   blogCategoryEdit,
+  blogCategoryAll,
+  blogCategoryPagination,
 } = require("./blogCategory");
 
 module.exports = {
@@ -22,4 +24,6 @@ module.exports = {
   blogCategoryDelete,
   blogCategoryDetail,
   blogCategoryEdit,
+  blogCategoryAll,
+  blogCategoryPagination,
 };
