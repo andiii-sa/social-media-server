@@ -1,4 +1,5 @@
 const { blog, blog_category, user } = require("../../../models");
+const { Op } = require("sequelize");
 const {
   ROOT_FOLDER_IMAGE_BLOG,
 } = require("../../utils/constants/urlBasePhoto");

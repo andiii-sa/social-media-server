@@ -33,6 +33,7 @@ module.exports = (sequelize, DataTypes) => {
       modelName: "blog_category",
       timestamps: true,
       paranoid: true,
+      freezeTableName: true,
     }
   );
 

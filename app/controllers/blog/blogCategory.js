@@ -1,4 +1,6 @@
 const { blog_category } = require("../../../models");
+const { Op } = require("sequelize");
+const convertToBoolean = require("../../helpers/convertToBoolean");
 
 const blogCategoryAdd = async (req, res) => {
   try {
@@ -121,7 +123,7 @@ const blogCategoryDelete = async (req, res) => {
       where: {
         id: id,
       },
-      force: isDeleted,
+      force: convertToBoolean(isDeleted),
     });
 
     return res.json({
@@ -155,6 +157,7 @@ const blogCategoryPagination = async (req, res) => {
           },
         ],
       },
+      order: [["createdAt", "DESC"]],
       limit: parseInt(limit),
       offset: parseInt(offset * limit),
     });
