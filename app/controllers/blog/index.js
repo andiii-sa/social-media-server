@@ -12,6 +12,7 @@ const {
   blogCategoryEdit,
   blogCategoryAll,
   blogCategoryPagination,
+  blogCategoryRestore,
 } = require("./blogCategory");
 
 module.exports = {
@@ -26,4 +27,5 @@ module.exports = {
   blogCategoryEdit,
   blogCategoryAll,
   blogCategoryPagination,
+  blogCategoryRestore,
 };

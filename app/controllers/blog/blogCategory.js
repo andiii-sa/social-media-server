@@ -108,6 +108,7 @@ const blogCategoryDelete = async (req, res) => {
       where: {
         id: id,
       },
+      paranoid: false,
     });
 
     if (!findBlogCategory) {
@@ -124,6 +125,49 @@ const blogCategoryDelete = async (req, res) => {
         id: id,
       },
       force: convertToBoolean(isDeleted),
+    });
+
+    return res.json({
+      message: "Success",
+      meta: {
+        status: 200,
+      },
+    });
+  } catch (error) {
+    console.log("error", error);
+    return res.status(500).json({
+      message: error?.errors || "Server Internal Error",
+      meta: {
+        status: 500,
+      },
+    });
+  }
+};
+
+const blogCategoryRestore = async (req, res) => {
+  try {
+    const { id } = req.params;
+
+    const findBlogCategory = await blog_category.findOne({
+      where: {
+        id: id,
+      },
+      paranoid: false,
+    });
+
+    if (!findBlogCategory) {
+      return res.status(404).json({
+        message: "Blog Category tidak ditemukan",
+        meta: {
+          status: 404,
+        },
+      });
+    }
+
+    await blog_category.restore({
+      where: {
+        id: id,
+      },
     });
 
     return res.json({
@@ -160,6 +204,7 @@ const blogCategoryPagination = async (req, res) => {
       order: [["createdAt", "DESC"]],
       limit: parseInt(limit),
       offset: parseInt(offset * limit),
+      paranoid: false,
     });
 
     // count
@@ -250,4 +295,5 @@ module.exports = {
   blogCategoryEdit,
   blogCategoryPagination,
   blogCategoryAll,
+  blogCategoryRestore,
 };

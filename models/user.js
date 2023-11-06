@@ -61,6 +61,7 @@ module.exports = (sequelize, DataTypes) => {
       });
       this.hasMany(models.blog, {
         foreignKey: "authorId",
+        as: "author",
         onDelete: "SET NULL",
         onUpdate: "CASCADE",
       });

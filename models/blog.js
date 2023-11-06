@@ -16,6 +16,7 @@ module.exports = (sequelize, DataTypes) => {
       });
       this.belongsTo(models.user, {
         targetKey: "id",
+        as: "author",
         foreignKey: "authorId",
       });
     }

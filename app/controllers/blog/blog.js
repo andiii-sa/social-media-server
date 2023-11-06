@@ -3,6 +3,7 @@ const { Op } = require("sequelize");
 const {
   ROOT_FOLDER_IMAGE_BLOG,
 } = require("../../utils/constants/urlBasePhoto");
+const fs = require("fs");
 
 const blogAdd = async (req, res) => {
   try {
@@ -29,9 +30,11 @@ const blogAdd = async (req, res) => {
     });
   } catch (error) {
     console.log("error", error);
-    await fs.unlink(
-      path.join(`public/${ROOT_FOLDER_IMAGE_BLOG}/${req.file.filename}`)
-    );
+    if (req?.file?.filename) {
+      fs.unlink(
+        path.join(`public/${ROOT_FOLDER_IMAGE_BLOG}/${req.file.filename}`)
+      );
+    }
     return res.status(500).json({
       message: error?.errors || "Server Internal Error",
       meta: {
@@ -78,9 +81,11 @@ const blogEdit = async (req, res) => {
     });
   } catch (error) {
     console.log("error", error);
-    await fs.unlink(
-      path.join(`public/${ROOT_FOLDER_IMAGE_BLOG}/${req.file.filename}`)
-    );
+    if (req?.file?.filename) {
+      fs.unlink(
+        path.join(`public/${ROOT_FOLDER_IMAGE_BLOG}/${req.file.filename}`)
+      );
+    }
     return res.status(500).json({
       message: error?.errors || "Server Internal Error",
       meta: {
@@ -102,19 +107,14 @@ const blogDetail = async (req, res) => {
       include: [
         {
           model: user,
-          attributes: {
-            exclude: [
-              "password",
-              "is_verification",
-              "otp",
-              "date_verification",
-              "role",
-            ],
-          },
+          attributes: ["id", "name", "photo"],
+          as: "author",
+          required: false,
         },
         {
           model: blog_category,
           attributes: ["id", "name"],
+          required: false,
         },
       ],
     });
@@ -196,22 +196,49 @@ const blogPagination = async (req, res) => {
       keywords = "",
       limit = 5,
       offset = 0,
-      blogCategoryId = "",
+      blogCategoryId = null,
     } = req.query;
+
+    let filter = [];
+    if (keywords) {
+      filter = [
+        ...filter,
+        {
+          title: {
+            [Op.like]: `%${keywords}%`,
+          },
+        },
+      ];
+    }
+    if (blogCategoryId) {
+      filter = [
+        ...filter,
+        {
+          blogCategoryId: {
+            [Op.eq]: blogCategoryId,
+          },
+        },
+      ];
+    }
 
     const findBlog = await blog.findAll({
       where: {
-        [Op.or]: [
-          {
-            title: {
-              [Op.like]: `%${keywords}%`,
-            },
-          },
-          {
-            blogCategoryId: blogCategoryId,
-          },
-        ],
+        [Op.and]: filter,
       },
+      include: [
+        {
+          model: user,
+          attributes: ["id", "name"],
+          as: "author",
+          required: false,
+        },
+        {
+          model: blog_category,
+          attributes: ["id", "name"],
+          required: false,
+        },
+      ],
+      order: [["createdAt", "DESC"]],
       limit: parseInt(limit),
       offset: parseInt(offset * limit),
     });
@@ -219,16 +246,7 @@ const blogPagination = async (req, res) => {
     // count
     const countData = await blog.count({
       where: {
-        [Op.or]: [
-          {
-            title: {
-              [Op.like]: `%${keywords}%`,
-            },
-          },
-          {
-            blogCategoryId: blogCategoryId,
-          },
-        ],
+        [Op.and]: filter,
       },
     });
 

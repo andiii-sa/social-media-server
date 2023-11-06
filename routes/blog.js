@@ -26,8 +26,8 @@ router.delete(
   permission("admin"),
   blogController.blogDelete
 );
-router.get("/:id/detail", verifyToken, blogController.blogDetail);
-router.get("/pagination", verifyToken, blogController.blogPagination);
+router.get("/:id/detail", blogController.blogDetail);
+router.get("/pagination", blogController.blogPagination);
 
 // Blog Category
 router.post(
@@ -47,6 +47,12 @@ router.delete(
   verifyToken,
   permission("admin"),
   blogController.blogCategoryDelete
+);
+router.put(
+  "/category/:id/restore",
+  verifyToken,
+  permission("admin"),
+  blogController.blogCategoryRestore
 );
 router.get(
   "/category/pagination",
