@@ -4,7 +4,6 @@ const {
   ROOT_FOLDER_IMAGE_BLOG,
 } = require("../../utils/constants/urlBasePhoto");
 const fs = require("fs");
-const convertToBoolean = require("../../helpers/convertToBoolean");
 
 const blogAdd = async (req, res) => {
   try {
@@ -156,7 +155,6 @@ const blogDelete = async (req, res) => {
       where: {
         id: id,
       },
-      paranoid: false,
     });
 
     if (!findBlog) {
@@ -172,7 +170,7 @@ const blogDelete = async (req, res) => {
       where: {
         id: id,
       },
-      force: convertToBoolean(isDeleted),
+      force: isDeleted,
     });
 
     return res.json({
@@ -192,131 +190,7 @@ const blogDelete = async (req, res) => {
   }
 };
 
-const blogRestore = async (req, res) => {
-  try {
-    const { id } = req.params;
-
-    const findBlog = await blog.findOne({
-      where: {
-        id: id,
-      },
-      paranoid: false,
-    });
-
-    if (!findBlog) {
-      return res.status(404).json({
-        message: "Blog tidak ditemukan",
-        meta: {
-          status: 404,
-        },
-      });
-    }
-
-    await blog.restore({
-      where: {
-        id: id,
-      },
-    });
-
-    return res.json({
-      message: "Success",
-      meta: {
-        status: 200,
-      },
-    });
-  } catch (error) {
-    console.log("error", error);
-    return res.status(500).json({
-      message: error?.errors || "Server Internal Error",
-      meta: {
-        status: 500,
-      },
-    });
-  }
-};
-
-const blogPaginationAdmin = async (req, res) => {
-  try {
-    const {
-      keywords = "",
-      limit = 5,
-      offset = 0,
-      blogCategoryId = null,
-    } = req.query;
-
-    let filter = [];
-    if (keywords) {
-      filter = [
-        ...filter,
-        {
-          title: {
-            [Op.like]: `%${keywords}%`,
-          },
-        },
-      ];
-    }
-    if (blogCategoryId) {
-      filter = [
-        ...filter,
-        {
-          blogCategoryId: {
-            [Op.eq]: blogCategoryId,
-          },
-        },
-      ];
-    }
-
-    const findBlog = await blog.findAll({
-      where: {
-        [Op.and]: filter,
-      },
-      include: [
-        {
-          model: user,
-          attributes: ["id", "name"],
-          as: "author",
-          required: false,
-        },
-        {
-          model: blog_category,
-          attributes: ["id", "name"],
-          required: false,
-        },
-      ],
-      paranoid: false,
-      order: [["createdAt", "DESC"]],
-      limit: parseInt(limit),
-      offset: parseInt(offset * limit),
-    });
-
-    // count
-    const countData = await blog.count({
-      where: {
-        [Op.and]: filter,
-      },
-    });
-
-    return res.json({
-      message: "Success",
-      data: findBlog,
-      meta: {
-        status: 200,
-        limit: limit,
-        total: countData,
-      },
-    });
-  } catch (error) {
-    console.log("error", error);
-    return res.status(500).json({
-      message: error?.errors || "Server Internal Error",
-      meta: {
-        status: 500,
-      },
-    });
-  }
-};
-
-const blogPaginationUser = async (req, res) => {
+const blogPagination = async (req, res) => {
   try {
     const {
       keywords = "",
@@ -401,7 +275,5 @@ module.exports = {
   blogDelete,
   blogDetail,
   blogEdit,
-  blogPaginationAdmin,
-  blogPaginationUser,
-  blogRestore,
+  blogPagination,
 };

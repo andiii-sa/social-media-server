@@ -26,8 +26,15 @@ router.delete(
   permission("admin"),
   blogController.blogDelete
 );
+router.put(
+  "/:id/restore",
+  verifyToken,
+  permission("admin"),
+  blogController.blogRestore
+);
 router.get("/:id/detail", blogController.blogDetail);
-router.get("/pagination", blogController.blogPagination);
+router.get("/pagination", blogController.blogPaginationAdmin);
+router.get("/website/pagination", blogController.blogPaginationUser);
 
 // Blog Category
 router.post(

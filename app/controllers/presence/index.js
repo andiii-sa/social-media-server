@@ -3,9 +3,7 @@ const {
   blogDelete,
   blogDetail,
   blogEdit,
-  blogPaginationAdmin,
-  blogPaginationUser,
-  blogRestore,
+  blogPagination,
 } = require("./blog");
 const {
   blogCategoryAdd,
@@ -20,11 +18,9 @@ const {
 module.exports = {
   blogAdd,
   blogDelete,
-  blogRestore,
   blogDetail,
   blogEdit,
-  blogPaginationAdmin,
-  blogPaginationUser,
+  blogPagination,
   blogCategoryAdd,
   blogCategoryDelete,
   blogCategoryDetail,
