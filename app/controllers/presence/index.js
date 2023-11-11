@@ -7,6 +7,33 @@ const {
   presenceLocationWorkPagination,
   presenceLocationWorkRestore,
 } = require("./presenceLocationWork");
+const {
+  presenceEmployeeAdd,
+  presenceEmployeeAll,
+  presenceEmployeeDelete,
+  presenceEmployeeDetail,
+  presenceEmployeeEdit,
+  presenceEmployeePagination,
+  presenceEmployeeRestore,
+} = require("./presenceEmployee");
+const {
+  presenceListDayAdd,
+  presenceListDayAll,
+  presenceListDayDelete,
+  presenceListDayDetail,
+  presenceListDayEdit,
+  presenceListDayPagination,
+  presenceListDayRestore,
+} = require("./presenceListDay");
+const {
+  presenceScheduleEmployeeAddMultiple,
+  presenceScheduleEmployeeAddSingle,
+  presenceScheduleEmployeeDelete,
+  presenceScheduleEmployeeDetail,
+  presenceScheduleEmployeeEdit,
+  presenceScheduleEmployeePagination,
+  presenceScheduleEmployeeRestore,
+} = require("./presenceScheduleEmployee");
 
 module.exports = {
   presenceLocationWorkAdd,
@@ -16,4 +43,25 @@ module.exports = {
   presenceLocationWorkAll,
   presenceLocationWorkPagination,
   presenceLocationWorkRestore,
+  presenceEmployeeAdd,
+  presenceEmployeeAll,
+  presenceEmployeeDelete,
+  presenceEmployeeDetail,
+  presenceEmployeeEdit,
+  presenceEmployeePagination,
+  presenceEmployeeRestore,
+  presenceListDayAdd,
+  presenceListDayAll,
+  presenceListDayDelete,
+  presenceListDayDetail,
+  presenceListDayEdit,
+  presenceListDayPagination,
+  presenceListDayRestore,
+  presenceScheduleEmployeeAddMultiple,
+  presenceScheduleEmployeeAddSingle,
+  presenceScheduleEmployeeDelete,
+  presenceScheduleEmployeeDetail,
+  presenceScheduleEmployeeEdit,
+  presenceScheduleEmployeePagination,
+  presenceScheduleEmployeeRestore,
 };

@@ -2,7 +2,7 @@ const { presence_list_day } = require("../../../models");
 const { Op } = require("sequelize");
 const convertToBoolean = require("../../helpers/convertToBoolean");
 
-const presenceListDayWorkAdd = async (req, res) => {
+const presenceListDayAdd = async (req, res) => {
   try {
     const { name } = req.body;
 
@@ -28,7 +28,7 @@ const presenceListDayWorkAdd = async (req, res) => {
   }
 };
 
-const presenceListDayWorkEdit = async (req, res) => {
+const presenceListDayEdit = async (req, res) => {
   try {
     const { name } = req.body;
     const { id } = req.params;
@@ -61,7 +61,7 @@ const presenceListDayWorkEdit = async (req, res) => {
   }
 };
 
-const presenceListDayWorkDetail = async (req, res) => {
+const presenceListDayDetail = async (req, res) => {
   try {
     const { id } = req.params;
 
@@ -99,7 +99,7 @@ const presenceListDayWorkDetail = async (req, res) => {
   }
 };
 
-const presenceListDayWorkDelete = async (req, res) => {
+const presenceListDayDelete = async (req, res) => {
   try {
     const { isDeleted = false } = req.query;
     const { id } = req.params;
@@ -144,7 +144,7 @@ const presenceListDayWorkDelete = async (req, res) => {
   }
 };
 
-const presenceListDayWorkRestore = async (req, res) => {
+const presenceListDayRestore = async (req, res) => {
   try {
     const { id } = req.params;
 
@@ -187,7 +187,7 @@ const presenceListDayWorkRestore = async (req, res) => {
   }
 };
 
-const presenceListDayWorkPagination = async (req, res) => {
+const presenceListDayPagination = async (req, res) => {
   try {
     const { keywords = "", limit = 5, offset = 0 } = req.query;
 
@@ -240,7 +240,7 @@ const presenceListDayWorkPagination = async (req, res) => {
   }
 };
 
-const presenceListDayWorkAll = async (req, res) => {
+const presenceListDayAll = async (req, res) => {
   try {
     const { keywords = "" } = req.query;
 
@@ -289,11 +289,11 @@ const presenceListDayWorkAll = async (req, res) => {
 };
 
 module.exports = {
-  presenceListDayWorkAdd,
-  presenceListDayWorkDelete,
-  presenceListDayWorkDetail,
-  presenceListDayWorkEdit,
-  presenceListDayWorkPagination,
-  presenceListDayWorkAll,
-  presenceListDayWorkRestore,
+  presenceListDayAdd,
+  presenceListDayDelete,
+  presenceListDayDetail,
+  presenceListDayEdit,
+  presenceListDayPagination,
+  presenceListDayAll,
+  presenceListDayRestore,
 };

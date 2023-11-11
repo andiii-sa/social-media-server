@@ -1,7 +1,6 @@
 const { presence_schedule_employee } = require("../../../models");
 const { Op } = require("sequelize");
 const convertToBoolean = require("../../helpers/convertToBoolean");
-const presence_schedule_employee = require("../../../models/presence_schedule_employee");
 const presence_list_day = require("../../../models/presence_list_day");
 const presence_location_work = require("../../../models/presence_location_work");
 const user = require("../../../models/user");

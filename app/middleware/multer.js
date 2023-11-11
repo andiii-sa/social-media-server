@@ -4,6 +4,7 @@ const fs = require("fs");
 const {
   ROOT_FOLDER_IMAGE_BLOG,
   ROOT_FOLDER_IMAGE_POST,
+  ROOT_FOLDER_IMAGE_PRESENCE,
 } = require("../utils/constants/urlBasePhoto");
 // import uuid from "uuid/v4";
 
@@ -95,4 +96,26 @@ const uploadBlogSingle = multer({
   storage: storageBlogSingle,
 }).single("image");
 
-module.exports = { uploadMultiple, upload, uploadPostSingle, uploadBlogSingle };
+const storagePresenceEmployee = multer.diskStorage({
+  destination: `public/${ROOT_FOLDER_IMAGE_PRESENCE}`,
+  filename: function (req, file, cb) {
+    cb(
+      null,
+      Date.now() +
+        `${Math.floor(Math.random() * 101)}` +
+        "." +
+        file.originalname
+    );
+  },
+});
+const uploadPresenceEmployee = multer({
+  storage: storagePresenceEmployee,
+}).single("image");
+
+module.exports = {
+  uploadMultiple,
+  upload,
+  uploadPostSingle,
+  uploadBlogSingle,
+  uploadPresenceEmployee,
+};

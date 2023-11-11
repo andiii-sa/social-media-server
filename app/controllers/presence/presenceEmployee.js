@@ -1,6 +1,10 @@
 const { presence_employee } = require("../../../models");
 const { Op } = require("sequelize");
 const convertToBoolean = require("../../helpers/convertToBoolean");
+const { isValidateDate } = require("../../utils/constants/isValidateDate");
+const {
+  ROOT_FOLDER_IMAGE_PRESENCE,
+} = require("../../utils/constants/urlBasePhoto");
 
 const presenceEmployeeAdd = async (req, res) => {
   try {
@@ -15,16 +19,26 @@ const presenceEmployeeAdd = async (req, res) => {
       latitude,
     } = req.body;
 
-    const create = await presence_employee.create({
+    let filename;
+    if (req.file) {
+      filename = `${ROOT_FOLDER_IMAGE_PRESENCE}/${req.file.filename}`;
+    }
+    let data = {
       employeeId,
       dayId,
       dayName,
       clockIn,
       clockOut,
-      image,
       longitude,
       latitude,
-    });
+    };
+    if (filename) {
+      data = {
+        ...data,
+        image: filename,
+      };
+    }
+    const create = await presence_employee.create(data);
 
     return res.json({
       message: "Success",
@@ -35,6 +49,11 @@ const presenceEmployeeAdd = async (req, res) => {
     });
   } catch (error) {
     console.log("error", error);
+    if (req?.file?.filename) {
+      fs.unlink(
+        path.join(`public/${ROOT_FOLDER_IMAGE_PRESENCE}/${req.file.filename}`)
+      );
+    }
     return res.status(500).json({
       message: error?.errors || "Server Internal Error",
       meta: {
@@ -58,16 +77,25 @@ const presenceEmployeeEdit = async (req, res) => {
     } = req.body;
     const { id } = req.params;
 
+    let filename;
+    if (req.file) {
+      filename = `${ROOT_FOLDER_IMAGE_PRESENCE}/${req.file.filename}`;
+    }
     let data = {
       employeeId,
       dayId,
       dayName,
       clockIn,
       clockOut,
-      image,
       longitude,
       latitude,
     };
+    if (filename) {
+      data = {
+        ...data,
+        image: filename,
+      };
+    }
 
     const update = await presence_employee.update(data, {
       where: {
@@ -84,6 +112,11 @@ const presenceEmployeeEdit = async (req, res) => {
     });
   } catch (error) {
     console.log("error", error);
+    if (req?.file?.filename) {
+      fs.unlink(
+        path.join(`public/${ROOT_FOLDER_IMAGE_PRESENCE}/${req.file.filename}`)
+      );
+    }
     return res.status(500).json({
       message: error?.errors || "Server Internal Error",
       meta: {
@@ -222,11 +255,12 @@ const presenceEmployeeRestore = async (req, res) => {
 const presenceEmployeePagination = async (req, res) => {
   try {
     const {
-      keywords = "",
       limit = 5,
       offset = 0,
       employeeId,
       dayId,
+      start_date,
+      end_date,
     } = req.query;
 
     let filter = [];
@@ -250,6 +284,26 @@ const presenceEmployeePagination = async (req, res) => {
         },
       ];
     }
+    if (start_date || end_date) {
+      if (!isValidateDate(start_date) || !isValidateDate(end_date)) {
+        return res.status(400).json({
+          message: "Format date mus YYYY-MM-DD tidak ditemukan",
+          meta: {
+            status: 404,
+          },
+        });
+      } else {
+        filter = [
+          ...filter,
+          {
+            createdAt: {
+              [Op.between]: [start_date, end_date],
+            },
+          },
+        ];
+      }
+    }
+
     const find = await presence_employee.findAll({
       where: {
         [Op.or]: filter,
@@ -289,30 +343,59 @@ const presenceEmployeePagination = async (req, res) => {
 
 const presenceEmployeeAll = async (req, res) => {
   try {
-    const { keywords = "" } = req.query;
+    const { employeeId, dayId, start_date, end_date } = req.query;
+
+    let filter = [];
+    if (employeeId) {
+      filter = [
+        ...filter,
+        {
+          employeeId: {
+            [Op.eq]: employeeId,
+          },
+        },
+      ];
+    }
+    if (dayId) {
+      filter = [
+        ...filter,
+        {
+          dayId: {
+            [Op.eq]: dayId,
+          },
+        },
+      ];
+    }
+    if (start_date || end_date) {
+      if (!isValidateDate(start_date) || !isValidateDate(end_date)) {
+        return res.status(400).json({
+          message: "Format date mus YYYY-MM-DD tidak ditemukan",
+          meta: {
+            status: 404,
+          },
+        });
+      } else {
+        filter = [
+          ...filter,
+          {
+            createdAt: {
+              [Op.between]: [start_date, end_date],
+            },
+          },
+        ];
+      }
+    }
 
     const find = await presence_employee.findAll({
       where: {
-        [Op.or]: [
-          {
-            name: {
-              [Op.like]: `%${keywords}%`,
-            },
-          },
-        ],
+        [Op.or]: filter,
       },
     });
 
     // count
     const countData = await presence_employee.count({
       where: {
-        [Op.or]: [
-          {
-            name: {
-              [Op.like]: `%${keywords}%`,
-            },
-          },
-        ],
+        [Op.or]: filter,
       },
     });
 
