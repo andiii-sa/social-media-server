@@ -38,6 +38,7 @@ module.exports = (sequelize, DataTypes) => {
       sequelize,
       modelName: "presence_list_day",
       timestamps: true,
+      freezeTableName: true,
       paranoid: true,
     }
   );

@@ -1,31 +1,19 @@
 const {
-  blogAdd,
-  blogDelete,
-  blogDetail,
-  blogEdit,
-  blogPagination,
-} = require("./blog");
-const {
-  blogCategoryAdd,
-  blogCategoryDelete,
-  blogCategoryDetail,
-  blogCategoryEdit,
-  blogCategoryAll,
-  blogCategoryPagination,
-  blogCategoryRestore,
-} = require("./blogCategory");
+  presenceLocationWorkAdd,
+  presenceLocationWorkDelete,
+  presenceLocationWorkDetail,
+  presenceLocationWorkEdit,
+  presenceLocationWorkAll,
+  presenceLocationWorkPagination,
+  presenceLocationWorkRestore,
+} = require("./presenceLocationWork");
 
 module.exports = {
-  blogAdd,
-  blogDelete,
-  blogDetail,
-  blogEdit,
-  blogPagination,
-  blogCategoryAdd,
-  blogCategoryDelete,
-  blogCategoryDetail,
-  blogCategoryEdit,
-  blogCategoryAll,
-  blogCategoryPagination,
-  blogCategoryRestore,
+  presenceLocationWorkAdd,
+  presenceLocationWorkDelete,
+  presenceLocationWorkDetail,
+  presenceLocationWorkEdit,
+  presenceLocationWorkAll,
+  presenceLocationWorkPagination,
+  presenceLocationWorkRestore,
 };

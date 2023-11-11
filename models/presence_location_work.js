@@ -50,6 +50,7 @@ module.exports = (sequelize, DataTypes) => {
       sequelize,
       modelName: "presence_location_work",
       timestamps: true,
+      freezeTableName: true,
       paranoid: true,
     }
   );
