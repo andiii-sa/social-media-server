@@ -254,6 +254,7 @@ const presenceListDayAll = async (req, res) => {
           },
         ],
       },
+      order: [["name", "DESC"]],
     });
 
     // count

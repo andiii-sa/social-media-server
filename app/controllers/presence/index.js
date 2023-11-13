@@ -12,9 +12,11 @@ const {
   presenceEmployeeAll,
   presenceEmployeeDelete,
   presenceEmployeeDetail,
+  presenceEmployeeDetailByUser,
   presenceEmployeeEdit,
   presenceEmployeePagination,
   presenceEmployeeRestore,
+  presenceEmployeeScheduleNow,
 } = require("./presenceEmployee");
 const {
   presenceListDayAdd,
@@ -47,9 +49,11 @@ module.exports = {
   presenceEmployeeAll,
   presenceEmployeeDelete,
   presenceEmployeeDetail,
+  presenceEmployeeDetailByUser,
   presenceEmployeeEdit,
   presenceEmployeePagination,
   presenceEmployeeRestore,
+  presenceEmployeeScheduleNow,
   presenceListDayAdd,
   presenceListDayAll,
   presenceListDayDelete,

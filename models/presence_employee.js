@@ -12,6 +12,7 @@ module.exports = (sequelize, DataTypes) => {
     static associate(models) {
       this.belongsTo(models.user, {
         targetKey: "id",
+        as: "employee",
         foreignKey: "employeeId",
       });
       this.belongsTo(models.presence_list_day, {

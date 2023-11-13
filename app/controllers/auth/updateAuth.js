@@ -6,7 +6,7 @@ module.exports = async (req, res) => {
     const { email, password } = req.body;
     const { id } = req.params;
 
-    registerValidation(req, res);
+    // registerValidation(req, res);
 
     const checkId = await user.findOne({
       where: {

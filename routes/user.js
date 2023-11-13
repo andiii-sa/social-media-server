@@ -8,13 +8,14 @@ router.get(
   "/pagination",
   verifyToken,
   permission("admin"),
-  userController.usersAll
+  userController.usersPagination
 );
-router.get(
-  "/all",
+router.get("/all", verifyToken, permission("admin"), userController.usersAll);
+router.delete(
+  "/:id/delete",
   verifyToken,
   permission("admin"),
-  userController.usersPagination
+  userController.usersDelete
 );
 
 module.exports = router;

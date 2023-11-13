@@ -16,6 +16,7 @@ module.exports = (sequelize, DataTypes) => {
 
       this.hasMany(models.presence_schedule_employee, {
         foreignKey: "dayId",
+        as: "day",
         onDelete: "CASCADE",
         onUpdate: "CASCADE",
       });

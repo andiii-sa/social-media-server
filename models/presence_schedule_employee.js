@@ -13,15 +13,18 @@ module.exports = (sequelize, DataTypes) => {
     static associate(models) {
       this.belongsTo(models.user, {
         targetKey: "id",
+        as: "schedules",
         foreignKey: "employeeId",
       });
 
       this.belongsTo(models.presence_list_day, {
         targetKey: "id",
+        as: "day",
         foreignKey: "dayId",
       });
       this.belongsTo(models.presence_location_work, {
         targetKey: "id",
+        as: "location",
         foreignKey: "locationWorkId",
       });
     }

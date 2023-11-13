@@ -67,11 +67,13 @@ module.exports = (sequelize, DataTypes) => {
       });
       this.hasMany(models.presence_employee, {
         foreignKey: "employeeId",
+        as: "employee",
         onDelete: "CASCADE",
         onUpdate: "CASCADE",
       });
       this.hasMany(models.presence_schedule_employee, {
         foreignKey: "employeeId",
+        as: "schedules",
         onDelete: "CASCADE",
         onUpdate: "CASCADE",
       });

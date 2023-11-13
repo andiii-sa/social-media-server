@@ -10,6 +10,7 @@ module.exports = (sequelize, DataTypes) => {
     static associate(models) {
       this.hasMany(models.presence_schedule_employee, {
         foreignKey: "locationWorkId",
+        as: "location",
         onDelete: "CASCADE",
         onUpdate: "CASCADE",
       });

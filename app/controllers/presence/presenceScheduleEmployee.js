@@ -1,9 +1,11 @@
-const { presence_schedule_employee } = require("../../../models");
+const {
+  presence_schedule_employee,
+  user,
+  presence_list_day,
+  presence_location_work,
+} = require("../../../models");
 const { Op } = require("sequelize");
 const convertToBoolean = require("../../helpers/convertToBoolean");
-const presence_list_day = require("../../../models/presence_list_day");
-const presence_location_work = require("../../../models/presence_location_work");
-const user = require("../../../models/user");
 
 const presenceScheduleEmployeeAddSingle = async (req, res) => {
   try {
@@ -26,7 +28,7 @@ const presenceScheduleEmployeeAddSingle = async (req, res) => {
     }
     const findLW = await presence_location_work.findOne({
       where: {
-        id: dayId,
+        id: locationWorkId,
       },
       paranoid: false,
     });
@@ -36,6 +38,24 @@ const presenceScheduleEmployeeAddSingle = async (req, res) => {
         message: "Location Work tidak ditemukan",
         meta: {
           status: 404,
+        },
+      });
+    }
+
+    const findSE = await presence_schedule_employee.findOne({
+      where: {
+        employeeId: employeeId,
+        dayId: dayId,
+        locationWorkId: locationWorkId,
+      },
+      paranoid: false,
+    });
+
+    if (findSE) {
+      return res.status(400).json({
+        message: "Jadwal telah tersedia",
+        meta: {
+          status: 400,
         },
       });
     }
@@ -70,7 +90,7 @@ const presenceScheduleEmployeeAddMultiple = async (req, res) => {
 
     const findLW = await presence_location_work.findOne({
       where: {
-        id: dayId,
+        id: locationWorkId,
       },
       paranoid: false,
     });
@@ -91,6 +111,20 @@ const presenceScheduleEmployeeAddMultiple = async (req, res) => {
     }));
 
     const create = await presence_schedule_employee.bulkCreate(data);
+
+    // const prom = await Promise.all(
+    //   data?.map(
+    //     async (item) =>
+    //       await presence_schedule_employee.findOne({
+    //         where: {
+    //           employeeId: item?.employeeId,
+    //           dayId: item?.dayId,
+    //           locationWorkId: item?.locationWorkId,
+    //         },
+    //         paranoid: false,
+    //       })
+    //   )
+    // );
 
     return res.json({
       message: "Success",
@@ -288,12 +322,19 @@ const presenceScheduleEmployeePagination = async (req, res) => {
       include: [
         {
           model: presence_schedule_employee,
-          attributes: ["id", "dayId"],
+          attributes: ["id", "dayId", "locationWorkId"],
+          as: "schedules",
           required: false,
           include: [
             {
               model: presence_list_day,
               attributes: ["id", "name"],
+              as: "day",
+              required: false,
+            },
+            {
+              model: presence_location_work,
+              as: "location",
               required: false,
             },
           ],
@@ -306,7 +347,7 @@ const presenceScheduleEmployeePagination = async (req, res) => {
     });
 
     // count
-    const countData = await presence_schedule_employee.count({
+    const countData = await user.count({
       where: {
         [Op.or]: [
           {
@@ -316,6 +357,8 @@ const presenceScheduleEmployeePagination = async (req, res) => {
           },
         ],
       },
+      order: [["name", "ASC"]],
+      paranoid: true,
     });
 
     return res.json({

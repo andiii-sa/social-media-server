@@ -51,7 +51,7 @@ router.get(
 
 // Presence Employee
 router.post(
-  "/employee/add",
+  "/employee/:type/:date/add",
   verifyToken,
   uploadPresenceEmployee,
   permission("admin"),
@@ -92,6 +92,18 @@ router.get(
   verifyToken,
   permission("admin"),
   presenceController.presenceEmployeeDetail
+);
+router.get(
+  "/employee/:date/detail-now",
+  verifyToken,
+  permission("admin"),
+  presenceController.presenceEmployeeDetailByUser
+);
+router.get(
+  "/employee/:dayName/shcedule-now",
+  verifyToken,
+  permission("admin"),
+  presenceController.presenceEmployeeScheduleNow
 );
 
 // List Day
