@@ -95,8 +95,16 @@ const presenceEmployeeAdd = async (req, res) => {
 
     const find = await presence_employee.findOne({
       where: {
-        createdAt: date,
-        employeeId: id,
+        [Op.and]: [
+          {
+            employeeId: id,
+          },
+          Sequelize.where(
+            Sequelize.fn("date", Sequelize.col("presence_employee.createdAt")),
+            "=",
+            new Date(date)
+          ),
+        ],
       },
       paranoid: false,
     });
@@ -173,14 +181,13 @@ const presenceEmployeeAdd = async (req, res) => {
             clockOut: filename ?? "",
           }),
         };
-
-        // Insert
-        dataUpdate = await presence_employee.create(data);
       }
+      // Insert
+      dataUpdate = await presence_employee.create(data);
     }
 
     return res.json({
-      message: "Success",
+      message: "Success Presence",
       data: dataUpdate,
       meta: {
         status: 200,
@@ -444,9 +451,20 @@ const presenceEmployeePagination = async (req, res) => {
     }
 
     const find = await presence_employee.findAll({
-      where: {
-        [Op.or]: filter,
-      },
+      where:
+        filter?.length > 0
+          ? {
+              [Op.or]: filter,
+            }
+          : {},
+      include: [
+        {
+          model: user,
+          attributes: ["id", "name"],
+          as: "employee",
+          required: false,
+        },
+      ],
       order: [["createdAt", "DESC"]],
       limit: parseInt(limit),
       offset: parseInt(offset * limit),
@@ -455,14 +473,25 @@ const presenceEmployeePagination = async (req, res) => {
 
     // count
     const countData = await presence_employee.count({
-      where: {
-        [Op.or]: filter,
-      },
+      where:
+        filter?.length > 0
+          ? {
+              [Op.or]: filter,
+            }
+          : {},
     });
+
+    const parseFind = JSON.parse(JSON.stringify(find));
+    const listData = parseFind?.map((item) => ({
+      ...item,
+      image: item?.image && JSON.parse(item?.image ?? ""),
+      longitude: item?.longitude && JSON.parse(item?.longitude ?? ""),
+      latitude: item?.latitude && JSON.parse(item?.latitude ?? ""),
+    }));
 
     return res.json({
       message: "Success",
-      data: find,
+      data: listData,
       meta: {
         status: 200,
         limit: limit,
@@ -650,12 +679,32 @@ const presenceEmployeeDetailByUser = async (req, res) => {
     }
 
     const find = await presence_employee.findOne({
-      attributes: {
-        exclude: ["createdAt", "updatedAt", "deletedAt"],
-      },
+      // attributes: {
+      //   // exclude: ["createdAt", "updatedAt", "deletedAt"],
+      // },
+      attributes: [
+        "id",
+        "employeeId",
+        "dayId",
+        "dayName",
+        "clockIn",
+        "clockOut",
+        "image",
+        "longitude",
+        "latitude",
+        "createdAt",
+      ],
       where: {
-        createdAt: date,
-        employeeId: id,
+        [Op.and]: [
+          {
+            employeeId: id,
+          },
+          Sequelize.where(
+            Sequelize.fn("date", Sequelize.col("presence_employee.createdAt")),
+            "=",
+            new Date(date)
+          ),
+        ],
       },
       include: [
         {
@@ -667,23 +716,25 @@ const presenceEmployeeDetailByUser = async (req, res) => {
       ],
       paranoid: false,
     });
+    const parseFind = JSON.parse(JSON.stringify(find));
 
     const data = {
-      id: find?.id,
-      employeeId: find?.employeeId,
-      employee: find?.employee,
-      dayId: find?.dayId,
-      dayName: find?.dayName,
-      clockIn: find?.clockIn,
-      clockOut: find?.clockOut,
-      image: find?.image,
-      longitude: find?.longitude,
-      latitude: find?.latitude,
-      // image: JSON.parse(find?.image ?? ""),
-      // longitude: JSON.parse(find?.longitude ?? ""),
-      // latitude: JSON.parse(find?.latitude ?? ""),
-      isPresenceIn: find?.clockIn ? true : false,
-      isPresenceOut: find?.clockOut ? true : false,
+      ...parseFind,
+      id: parseFind?.id,
+      employeeId: parseFind?.employeeId,
+      employee: parseFind?.employee,
+      dayId: parseFind?.dayId,
+      dayName: parseFind?.dayName,
+      clockIn: parseFind?.clockIn,
+      clockOut: parseFind?.clockOut,
+      image: parseFind?.image,
+      longitude: parseFind?.longitude,
+      latitude: parseFind?.latitude,
+      image: parseFind?.image && JSON.parse(parseFind?.image ?? ""),
+      longitude: parseFind?.longitude && JSON.parse(parseFind?.longitude ?? ""),
+      latitude: parseFind?.latitude && JSON.parse(parseFind?.latitude ?? ""),
+      isPresenceIn: parseFind?.clockIn ? true : false,
+      isPresenceOut: parseFind?.clockOut ? true : false,
     };
 
     return res.json({
