@@ -17,6 +17,7 @@ const {
   presenceEmployeePagination,
   presenceEmployeeRestore,
   presenceEmployeeScheduleNow,
+  presenceEmployeeExportExcel,
 } = require("./presenceEmployee");
 const {
   presenceListDayAdd,
@@ -54,6 +55,7 @@ module.exports = {
   presenceEmployeePagination,
   presenceEmployeeRestore,
   presenceEmployeeScheduleNow,
+  presenceEmployeeExportExcel,
   presenceListDayAdd,
   presenceListDayAll,
   presenceListDayDelete,

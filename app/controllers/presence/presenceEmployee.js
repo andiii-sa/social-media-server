@@ -12,6 +12,7 @@ const { isValidateDate } = require("../../utils/constants/isValidateDate");
 const {
   ROOT_FOLDER_IMAGE_PRESENCE,
 } = require("../../utils/constants/urlBasePhoto");
+const excelJS = require("exceljs");
 
 const presenceEmployeeAdd = async (req, res) => {
   try {
@@ -755,6 +756,86 @@ const presenceEmployeeDetailByUser = async (req, res) => {
   }
 };
 
+const presenceEmployeeExportExcel = async (req, res) => {
+  const User = [
+    {
+      fname: "Amir",
+      lname: "Mustafa",
+      email: "amir@gmail.com",
+      gender: "Male",
+    },
+    {
+      fname: "Ashwani",
+      lname: "Kumar",
+      email: "ashwani@gmail.com",
+      gender: "Male",
+    },
+    {
+      fname: "Nupur",
+      lname: "Shah",
+      email: "nupur@gmail.com",
+      gender: "Female",
+    },
+    {
+      fname: "Himanshu",
+      lname: "Mewari",
+      email: "himanshu@gmail.com",
+      gender: "Male",
+    },
+    {
+      fname: "Vankayala",
+      lname: "Sirisha",
+      email: "sirisha@gmail.com",
+      gender: "Female",
+    },
+  ];
+
+  let filename = "filenamecok" + ".xlsx";
+
+  const workbook = new excelJS.Workbook(); // Create a new workbook
+  const worksheet = workbook.addWorksheet("My Users"); // New Worksheet
+
+  // Column for data in excel. key must match data key
+  worksheet.columns = [
+    { header: "S no.", key: "s_no", width: 10 },
+    { header: "First Name", key: "fname", width: 10 },
+    { header: "Last Name", key: "lname", width: 10 },
+    { header: "Email Id", key: "email", width: 10 },
+    { header: "Gender", key: "gender", width: 10 },
+  ];
+  // Looping through User data
+  let counter = 1;
+  User.forEach((user) => {
+    user.s_no = counter;
+    worksheet.addRow(user); // Add data in worksheet
+    counter++;
+  });
+  // Making first line in excel bold
+  worksheet.getRow(1).eachCell((cell) => {
+    cell.font = { bold: true };
+  });
+
+  res.setHeader(
+    "Content-Type",
+    "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet"
+  );
+  res.setHeader("Content-Filename", filename);
+
+  return workbook.xlsx
+    .write(res)
+    .then(function () {
+      res.status(200).end();
+    })
+    .catch((error) => {
+      res.status(500).json({
+        message: error?.errors || "Server Internal Error",
+        meta: {
+          status: 500,
+        },
+      });
+    });
+};
+
 module.exports = {
   presenceEmployeeAdd,
   presenceEmployeeDelete,
@@ -765,4 +846,5 @@ module.exports = {
   presenceEmployeeRestore,
   presenceEmployeeScheduleNow,
   presenceEmployeeDetailByUser,
+  presenceEmployeeExportExcel,
 };

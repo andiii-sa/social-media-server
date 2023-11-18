@@ -10,6 +10,9 @@ const io = require("socket.io")(process.env.PORT_SOCKET, {
   },
   path: "/room-socket",
 });
+const corsOptions = {
+  exposedHeaders: ["Content-Filename"],
+};
 
 var indexRouter = require("./routes/index");
 var userRouter = require("./routes/user");
@@ -24,7 +27,7 @@ roomSocket(io);
 var app = express();
 const URL = `/api/v1`;
 
-app.use(cors());
+app.use(cors(corsOptions));
 app.use(logger("dev"));
 app.use(express.urlencoded({ extended: false }));
 app.use(express.json());

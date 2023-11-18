@@ -105,6 +105,12 @@ router.get(
   permission("admin"),
   presenceController.presenceEmployeeScheduleNow
 );
+router.get(
+  "/employee/export-excel",
+  verifyToken,
+  permission("admin"),
+  presenceController.presenceEmployeeExportExcel
+);
 
 // List Day
 router.post(
