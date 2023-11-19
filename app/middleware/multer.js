@@ -112,10 +112,13 @@ const uploadPresenceEmployee = multer({
   storage: storagePresenceEmployee,
 }).single("image");
 
+const uploadFileMultipleUser = multer().single("fileUser");
+
 module.exports = {
   uploadMultiple,
   upload,
   uploadPostSingle,
   uploadBlogSingle,
   uploadPresenceEmployee,
+  uploadFileMultipleUser,
 };

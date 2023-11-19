@@ -13,6 +13,7 @@ const {
   ROOT_FOLDER_IMAGE_PRESENCE,
 } = require("../../utils/constants/urlBasePhoto");
 const excelJS = require("exceljs");
+const dayjs = require("dayjs");
 
 const presenceEmployeeAdd = async (req, res) => {
   try {
@@ -757,83 +758,123 @@ const presenceEmployeeDetailByUser = async (req, res) => {
 };
 
 const presenceEmployeeExportExcel = async (req, res) => {
-  const User = [
-    {
-      fname: "Amir",
-      lname: "Mustafa",
-      email: "amir@gmail.com",
-      gender: "Male",
-    },
-    {
-      fname: "Ashwani",
-      lname: "Kumar",
-      email: "ashwani@gmail.com",
-      gender: "Male",
-    },
-    {
-      fname: "Nupur",
-      lname: "Shah",
-      email: "nupur@gmail.com",
-      gender: "Female",
-    },
-    {
-      fname: "Himanshu",
-      lname: "Mewari",
-      email: "himanshu@gmail.com",
-      gender: "Male",
-    },
-    {
-      fname: "Vankayala",
-      lname: "Sirisha",
-      email: "sirisha@gmail.com",
-      gender: "Female",
-    },
-  ];
+  let filename = "presence-" + dayjs().format("DD/MM/YYYY-HH:mm:ss") + ".xlsx";
 
-  let filename = "filenamecok" + ".xlsx";
+  const workbook = new excelJS.Workbook();
+  const worksheet = workbook.addWorksheet("Presence");
 
-  const workbook = new excelJS.Workbook(); // Create a new workbook
-  const worksheet = workbook.addWorksheet("My Users"); // New Worksheet
-
-  // Column for data in excel. key must match data key
   worksheet.columns = [
-    { header: "S no.", key: "s_no", width: 10 },
-    { header: "First Name", key: "fname", width: 10 },
-    { header: "Last Name", key: "lname", width: 10 },
-    { header: "Email Id", key: "email", width: 10 },
-    { header: "Gender", key: "gender", width: 10 },
+    { header: "Name", key: "name" },
+    { header: "Tanggal", key: "date" },
+    { header: "Jam Masuk", key: "clockIn" },
+    { header: "Jam Keluar", key: "clockOut" },
   ];
-  // Looping through User data
-  let counter = 1;
-  User.forEach((user) => {
-    user.s_no = counter;
-    worksheet.addRow(user); // Add data in worksheet
-    counter++;
-  });
-  // Making first line in excel bold
-  worksheet.getRow(1).eachCell((cell) => {
-    cell.font = { bold: true };
-  });
 
-  res.setHeader(
-    "Content-Type",
-    "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet"
-  );
-  res.setHeader("Content-Filename", filename);
+  try {
+    const { employeeId, dayId, start_date, end_date } = req.query;
 
-  return workbook.xlsx
-    .write(res)
-    .then(function () {
-      res.status(200).end();
-    })
-    .catch((error) => {
-      res.status(500).json({
-        message: error?.errors || "Server Internal Error",
-        meta: {
-          status: 500,
+    let filter = [];
+    if (employeeId) {
+      filter = [
+        ...filter,
+        {
+          employeeId: {
+            [Op.eq]: employeeId,
+          },
         },
+      ];
+    }
+    if (dayId) {
+      filter = [
+        ...filter,
+        {
+          dayId: {
+            [Op.eq]: dayId,
+          },
+        },
+      ];
+    }
+    if (start_date || end_date) {
+      if (!isValidateDate(start_date) || !isValidateDate(end_date)) {
+        return res.status(400).json({
+          message: "Format date must YYYY-MM-DD",
+          meta: {
+            status: 404,
+          },
+        });
+      } else {
+        filter = [
+          ...filter,
+          {
+            createdAt: {
+              [Op.between]: [start_date, end_date],
+            },
+          },
+        ];
+      }
+    }
+
+    const find = await presence_employee.findAll({
+      where:
+        filter?.length > 0
+          ? {
+              [Op.or]: filter,
+            }
+          : {},
+      include: [
+        {
+          model: user,
+          attributes: ["id", "name"],
+          as: "employee",
+          required: false,
+        },
+      ],
+      order: [["createdAt", "DESC"]],
+      paranoid: false,
+    });
+
+    const parseFind = JSON.parse(JSON.stringify(find));
+    parseFind?.forEach((item) => {
+      worksheet.addRow({
+        name: item?.employee?.name,
+        date: dayjs(item?.createdAt).format("DD/MM/YYYY"),
+        clockIn: item?.clockIn,
+        clockOut: item?.clockOut,
       });
     });
+
+    worksheet.getRow(1).eachCell((cell) => {
+      cell.font = { bold: true };
+    });
+
+    res.setHeader(
+      "Content-Type",
+      "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet"
+    );
+    res.setHeader("Content-Filename", filename);
+
+    return workbook.xlsx
+      .write(res)
+      .then(function () {
+        res.status(200).end();
+      })
+      .catch((error) => {
+        res.status(500).json({
+          message: error?.errors || "Server Internal Error",
+          meta: {
+            status: 500,
+          },
+        });
+      });
+  } catch (error) {
+    console.log("error", error);
+    return res.status(500).json({
+      message: error?.errors || "Server Internal Error",
+      meta: {
+        status: 500,
+      },
+    });
+  }
 };
 
 module.exports = {
